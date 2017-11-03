@@ -6,9 +6,11 @@ from Target import Target
 class TargetProcessor:
 	#image
 	#hsv_image
-	def putThreshed(self, threshed):
+	def putThreshed(self, threshed, frame):
 		global image
 		image = threshed
+		global f
+		f = frame
 	def contour(self):
 		global image
 		global contours
@@ -19,15 +21,15 @@ class TargetProcessor:
 		maxX = 0
 		maxY = 0
 		minX = 100000000
-		maxX = 100000000
+		minY = 100000000
 		focalLength = 480
 		width = 0.1
 		global target
 		target = Target()
 		for cont in contours:
 			count = count +1
-			approx = cv2.approxPolyDP(cont, 0.1*cv2.arcLength(cont,True), True)
-			if (abs(cv2.contourArea(approx)) > 0):
+			approx = cv2.approxPolyDP(cont, 0.01*cv2.arcLength(cont,True), True)
+			if (len(approx)  == 4):
 				for i in approx:
 					if i[0][0] > maxX:
 						maxX = i[0][0]
